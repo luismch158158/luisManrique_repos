@@ -60,3 +60,25 @@ CREATE TABLE orders (
     FOREIGN KEY (fk_user) REFERENCES users(pk_user),
     FOREIGN KEY (fk_patient) REFERENCES patient(pk_patient)
 );
+
+CREATE TABLE medical_test (
+    pk_medical_test INT(11) NOT NULL AUTO_INCREMENT,
+    name VARCHAR(50) NOT NULL,
+    description TEXT NULL,
+    price FLOAT(7,2) NOT NULL,
+    created_at TIMESTAMP NOT NULL,
+    updated_at TIMESTAMP NOT NULL,
+    PRIMARY KEY (pk_medical_test)
+);
+
+CREATE TABLE orders_details (
+    pk_order_detail INT(11) NOT NULL AUTO_INCREMENT,
+    fk_order INT(11) NOT NULL,
+    fk_medical_test INT(11) NOT NULL,
+    price FLOAT(7,2) NOT NULL,
+    created_at TIMESTAMP NOT NULL,
+    updated_at TIMESTAMP NOT NULL,
+    PRIMARY KEY (pk_order_detail),
+    FOREIGN KEY (fk_order) REFERENCES orders(pk_order),
+    FOREIGN KEY (fk_medical_test) REFERENCES medical_test(pk_medical_test)
+);
