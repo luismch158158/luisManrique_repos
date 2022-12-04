@@ -45,3 +45,18 @@ CREATE TABLE patient (
     updated_at TIMESTAMP NOT NULL,
     PRIMARY KEY (pk_patient)
 );
+
+CREATE TABLE orders (
+    pk_order INT(11) NOT NULL AUTO_INCREMENT,
+    fk_doctor INT(11) NULL,
+    fk_patient INT(11) NOT NULL,
+    fk_user INT(11) NOT NULL,
+    code CHAR(8) NOT NULL,
+    is_active BOOL NOT NULL DEFAULT TRUE,
+    created_at TIMESTAMP NOT NULL,
+    updated_at TIMESTAMP NOT NULL,
+    PRIMARY KEY (pk_order),
+    FOREIGN KEY (fk_doctor) REFERENCES doctors(pk_doctor),
+    FOREIGN KEY (fk_user) REFERENCES users(pk_user),
+    FOREIGN KEY (fk_patient) REFERENCES patient(pk_patient)
+);
