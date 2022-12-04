@@ -23,3 +23,25 @@ CREATE TABLE doctors (
     PRIMARY KEY (pk_doctor),
     FOREIGN KEY (fk_medical_center) REFERENCES medical_center(pk_medical_center)
 );
+
+CREATE TABLE users (
+    pk_user INT(11) NOT NULL AUTO_INCREMENT,
+    email VARCHAR(50) NOT NULL,
+    name VARCHAR(50) NULL,
+    password VARCHAR(50) NOT NULL,
+    created_at TIMESTAMP NOT NULL,
+    updated_at TIMESTAMP NOT NULL,
+    PRIMARY KEY (pk_user)
+);
+
+CREATE TABLE patient (
+    pk_patient INT(11) NOT NULL AUTO_INCREMENT,
+    first_name VARCHAR(50) NOT NULL,
+    last_name VARCHAR(50) NOT NULL,
+    birth_date DATE NOT NULL,
+    phone_number CHAR(9) NULL,
+    email VARCHAR(50) NULL,
+    created_at TIMESTAMP NOT NULL,
+    updated_at TIMESTAMP NOT NULL,
+    PRIMARY KEY (pk_patient)
+);
