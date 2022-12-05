@@ -13,6 +13,11 @@
 
 </div>
 
+## To run
+---
+Tor run the program you must use the following command from the root of the project.
+- `php -S localhost:8000 router/router.php`
+
 ## Authors
 ---
 
