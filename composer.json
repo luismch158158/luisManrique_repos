@@ -1,0 +1,13 @@
+{
+    "name": "luismch158158/luis-manrique_repos",
+    "description": "This is a practical exercise",
+    "type": "project",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Luis Fernando Manrique Chávez",
+            "email": "luismanrique158158@gmail.com"
+        }
+    ],
+    "require": {}
+}
