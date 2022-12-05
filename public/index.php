@@ -1,6 +1,8 @@
 <?php
 
 use App\Controllers\medicalCenterController;
+use App\Controllers\patientController;
+
 require("vendor/autoload.php");
 
 
@@ -37,6 +39,18 @@ switch ( strtoupper($_SERVER['REQUEST_METHOD'])) {
             else {
                 if ( $resourceId <= count($all_medicalcenters) && $resourceId > 0 ) {
                     $medicalCenter_controller->showindexid($resourceId, $all_medicalcenters);
+                }
+            }
+        }
+        else if ($resourceType == "pacientes") {
+            // Instancio los Pacientes de la base de datos
+            $patients_controller = new patientController;
+            $all_patients = $patients_controller->index();
+            if (empty( $resourceId ))
+                $patients_controller->showindex($all_patients);
+            else {
+                if ( $resourceId <= count($all_patients) && $resourceId > 0 ) {
+                    $patients_controller->showindexid($resourceId, $all_patients);
                 }
             }
         }
