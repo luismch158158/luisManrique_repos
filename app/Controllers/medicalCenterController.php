@@ -30,6 +30,22 @@ class medicalCenterController {
         while($row = $stmt->fetch(\PDO::FETCH_ASSOC))
             array_push($finalArray, $row);
 
-        echo json_encode($finalArray);
+        return $finalArray;
+    }
+
+    public function showindex($medicalcenters) {
+        $json_medicalcenters = json_encode($medicalcenters);
+        echo $json_medicalcenters;
+    }
+
+    public function showindexid($resourceid, $medicalcenters){
+
+        foreach($medicalcenters as $center) {
+            if ($center["pk_medical_center"] == $resourceid ){
+                $json_medicalcenters_id = json_encode($center);
+                echo $json_medicalcenters_id;
+                break;
+            }
+        }
     }
 }
