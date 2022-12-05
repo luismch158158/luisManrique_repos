@@ -22,6 +22,7 @@ if(preg_match('/\/([^\/]+)\/([^\/]+)/',$_SERVER["REQUEST_URI"],$matches))
 {
     error_log('No matches');
     http_response_code(404);
+    echo "404 PAGE NOT FOUND ";
 }
 
 ?>
