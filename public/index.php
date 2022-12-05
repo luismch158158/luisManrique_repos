@@ -1,8 +1,8 @@
 <?php
 
 use App\Controllers\medicalCenterController;
-
 require("vendor/autoload.php");
+
 
 // Definimos los recursos disponibles
 $allowedResourcesTypes = [
@@ -16,16 +16,30 @@ if ( !in_array( $resourceType, $allowedResourcesTypes ) ){
     die;
 }
 
+// Si no tiene ningun id, entonces quiero que me lo defina como vacío
+// Existe la key 'resource_id' en el array $_GET en caso exista zetearlo y si no lo dejamos vacío
+$resourceId = array_key_exists('resource_id', $_GET) ? $_GET["resource_id"] : '';
+
 // Se indica al cliente que lo que recibirá es un json
 header('Content-Type: application/json');
 
-// Instancio los Centros Médicos de la base de datos
-$medicalCenter_controller = new medicalCenterController;
+
 
 // Generamos la respuesta asumiendo que el pedido es correcto
 switch ( strtoupper($_SERVER['REQUEST_METHOD'])) {
     case 'GET':
-        $medicalCenter_controller->index();
+        if ($resourceType == "centrosmedicos") {
+            // Instancio los Centros Médicos de la base de datos
+            $medicalCenter_controller = new medicalCenterController;
+            $all_medicalcenters = $medicalCenter_controller->index();
+            if (empty( $resourceId ))
+                $medicalCenter_controller->showindex($all_medicalcenters);
+            else {
+                if ( $resourceId <= count($all_medicalcenters) && $resourceId > 0 ) {
+                    $medicalCenter_controller->showindexid($resourceId, $all_medicalcenters);
+                }
+            }
+        }
         break;
     case 'POST':
         break;
