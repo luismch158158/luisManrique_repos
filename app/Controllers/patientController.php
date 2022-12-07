@@ -35,17 +35,141 @@ class patientController {
 
     public function showindex($patients) {
         $json_patients = json_encode($patients);
-        echo $json_patients;
+        header('Content-Type: text/html');
+
+        require("resources/views/patient/index.php");
+        return $json_patients;
     }
 
     public function showindexid($resourceid, $patients){
 
+        header('Content-Type: application/json');
         foreach($patients as $patient) {
             if ($patient["pk_patient"] == $resourceid ){
+
                 $json_patients_id = json_encode($patient);
                 echo $json_patients_id;
                 break;
             }
         }
+    }
+
+    // Muestra un formulario para crear un nuevo paciente
+    public function create() {
+        header('Content-Type: text/html');
+        require("resources/views/patient/create.php");
+    }
+
+    public function store($data){
+        // Este metodo prepare va a preparar la consulta pero no la va a ejecutar, esto evita el sql injection
+        $stmt = $this->connection->prepare("INSERT INTO patient (first_name, last_name, birth_date, phone_number, email, created_at, updated_at) VALUES (:first_name, :last_name, :birth_date, :phone_number, :email,:created_at , :updated_at)");
+
+        $is_empty = array_search("", $data);
+        if ($is_empty){
+            echo "Faltan datos por rellenar";
+            http_response_code( 400 );
+        }
+        else {
+
+            $first_name = strtoupper($data["first_name"]);
+            $last_name = strtoupper($data["last_name"]);
+            $birth_date = $data["birth_date"];
+            $phone_number = $data["phone_number"];
+            $email = $data["email"];
+            $created_at = date("Y-m-d H:i:s", time());
+            $updated_at = date("Y-m-d H:i:s", time());
+
+            $array_created = array(
+                "first_name"=> $first_name,
+                "last_name"=> $last_name,
+                "birth_date"=> $birth_date,
+                "phone_number"=> $phone_number,
+                "email"=> $email,
+                "created_at"=> $created_at,
+                "updated_at"=> $updated_at
+            );
+
+            $stmt->bindValue(":first_name", $first_name);
+            $stmt->bindValue(":last_name", $last_name);
+            $stmt->bindValue(":birth_date", $birth_date);
+            $stmt->bindValue(":phone_number", $phone_number);
+            $stmt->bindValue(":email", $email);
+            $stmt->bindValue(":created_at", $created_at);
+            $stmt->bindValue(":updated_at", $updated_at);
+
+
+            $stmt->execute();
+
+            http_response_code( 204 );
+            header("location: pacientes");
+            return (json_encode($array_created));
+        }
+    }
+
+    // Muestra un formulario para crear un nuevo paciente
+
+    public function showupdate($data, $id, $all_resources) {
+
+        foreach($all_resources as $patient) {
+            if ($patient["pk_patient"] == $id ){
+
+                $specify_patient = $patient;
+                break;
+            }
+        }
+
+        header('Content-Type: text/html');
+
+        require("resources/views/patient/update_patient.php");
+    }
+
+    public function update($data, $idToChange) {
+
+        $stmt = $this->connection->prepare("UPDATE patient SET
+            first_name = :first_name,
+            last_name = :last_name,
+            birth_date = :birth_date,
+            phone_number = :phone_number,
+            email = :email,
+            updated_at = :updated_at
+        WHERE pk_patient=:id;");
+
+        $is_empty = array_search("", $data);
+        if ($is_empty){
+            echo "Faltan datos por rellenar";
+            http_response_code( 400 );
+        }
+        else {
+            $stmt->bindValue(":first_name", strtoupper($data["first_name"]));
+            $stmt->bindValue(":last_name", strtoupper($data["last_name"]));
+            $stmt->bindValue(":birth_date", $data["birth_date"]);
+            $stmt->bindValue(":phone_number", $data["phone_number"]);
+            $stmt->bindValue(":email", $data["email"]);
+            $stmt->bindValue(":updated_at", date("Y-m-d H:i:s", time()));
+            $stmt->bindValue(":id", intval($idToChange));
+
+            $stmt->execute();
+
+            http_response_code( 204 );
+            header("location: pacientes");
+            return ([]);
+        }
+
+    }
+
+
+    public function delete($id){
+
+        // Iniciamos transacción para que haya una validación al momento de eliminar un paciente
+        // $this->connection->beginTransaction();
+        $idToDelete = intval($id);
+        $stmt = $this->connection->prepare("DELETE FROM patient WHERE pk_patient= :id");
+
+        $stmt->bindValue(":id", $idToDelete);
+
+        $stmt->execute();
+
+        http_response_code( 204 );
+        header("location: pacientes");
     }
 }
