@@ -35,11 +35,20 @@ class medicalCenterController {
 
     public function showindex($medicalcenters) {
         $json_medicalcenters = json_encode($medicalcenters);
+        // header('Content-Type: text/html');
+        header('Content-Type: application/json');
+
         echo $json_medicalcenters;
+
+        // Como estamos requiriendo desde acá entonces acceso desde esta vista a la variable $medicalcenters
+        // Para poder renderizar la vista
+        // Solo tendria que descomentar la linea del require y linea del content-type text/html y comentar json para acceder a la vista html
+        // require("resources/views/medicalCenter/index.php");
     }
 
     public function showindexid($resourceid, $medicalcenters){
 
+        header('Content-Type: application/json');
         foreach($medicalcenters as $center) {
             if ($center["pk_medical_center"] == $resourceid ){
                 $json_medicalcenters_id = json_encode($center);
