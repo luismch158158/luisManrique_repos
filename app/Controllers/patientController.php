@@ -160,8 +160,6 @@ class patientController {
 
     public function delete($id){
 
-        // Iniciamos transacción para que haya una validación al momento de eliminar un paciente
-        // $this->connection->beginTransaction();
         $idToDelete = intval($id);
         $stmt = $this->connection->prepare("DELETE FROM patient WHERE pk_patient= :id");
 
