@@ -1,8 +1,17 @@
--- Aplicar para crear la base de datos
--- CREATE DATABASE model_multilab;
-
 -- Para cargar la data desde este archivo modelo.sql
--- cat modelo.sql | sudo mysql model_multilab
+-- cat modelo.sql | sudo mysql
+
+-- Aplicar para crear la base de datos, usuario y dar privilegios
+CREATE DATABASE IF NOT EXISTS multilab_database;
+
+CREATE USER IF NOT EXISTS 'user_0d_1'@'localhost' IDENTIFIED BY 'Test123+';
+GRANT ALL PRIVILEGES ON *.* TO 'user_0d_1'@'localhost';
+
+SHOW GRANTS FOR 'user_0d_1'@'localhost';
+
+USE multilab_database;
+
+-- CREACION DE TABLAS RELACIONALES
 
 CREATE TABLE medical_center (
     pk_medical_center INT(11) NOT NULL AUTO_INCREMENT,
