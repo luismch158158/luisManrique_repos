@@ -35,8 +35,8 @@ class Connection {
 
     private function make_connection() {
         $server = "localhost";
-        $database = "model_multilab";
-        $username = "luismch158158";
+        $database = "multilab_database";
+        $username = "user_0d_1";
         $password = "Test123+";
 
         // PDO se coloca el slash para que reconozca que esta en el namespace global
