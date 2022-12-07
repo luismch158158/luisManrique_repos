@@ -23,6 +23,9 @@ To load the initial data of the project execute the following command
 
 - `cat database/dump.sql | sudo mysql multilab_database`
 
+To initialize composer to load composer.json
+- `composer install`
+
 ## To run
 ---
 For run the program you must use the following command from the root of the project.
